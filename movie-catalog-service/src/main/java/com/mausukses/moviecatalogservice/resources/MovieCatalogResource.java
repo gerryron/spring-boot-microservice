@@ -33,13 +33,15 @@ public class MovieCatalogResource {
     );
 
     return ratings.stream().map(rating -> {
-      Movie movie = webClientBuilder.build()
-          .get()
-          .uri("http://localhost:8082/movies/"+ rating.getMovieId())
-          .retrieve()
-          .bodyToMono(Movie.class)
-          .block();
-//      Movie movie = restTemplate.getForObject("http://localhost:8082/movies/"+rating.getMovieId(), Movie.class);
+      // Using WebClient:
+//      Movie movie = webClientBuilder.build()
+//          .get()
+//          .uri("http://localhost:8082/movies/"+ rating.getMovieId())
+//          .retrieve()
+//          .bodyToMono(Movie.class)
+//          .block();
+      // Using RestTemplate:
+      Movie movie = restTemplate.getForObject("http://localhost:8082/movies/"+rating.getMovieId(), Movie.class);
       return new CatalogItem(movie.getName(), "Desc", rating.getRating());
     })
         .collect(Collectors.toList());
